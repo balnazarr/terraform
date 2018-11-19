@@ -4,7 +4,6 @@
 
 module "vpc" {
   source = "modules/mod-vpc"
-  region =  "us-west-2"
-  name   =  "danny-vpc"  
-  
+#  region =  "${var.region}"
+  name   =  "danny"
 }

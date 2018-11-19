@@ -1,1 +1,3 @@
-variable "subnets" {}
+variable "name" {}
+
+variable "subnets" { default = "" }
