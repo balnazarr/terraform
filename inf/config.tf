@@ -16,7 +16,7 @@ provider "aws" {
 terraform {
   backend "s3" {
     bucket = "danny-terraform"
-    key    = "network/vpc.tfstate"
+    key    = "vpc.tfstate"
     region = "us-west-2"
 #    role_arn = "arn:aws:iam::852237612097:role/danny-terraform-role"
   }
