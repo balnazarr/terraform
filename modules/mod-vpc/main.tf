@@ -17,6 +17,7 @@ data "aws_availability_zones" "az" {}
 # VPC
 #----------------------------------------------------------------
 
+
 resource "aws_vpc" "main" {
   cidr_block           = "${local.vpc_cidr}"
   enable_dns_support   = true
@@ -39,4 +40,9 @@ module "general-subnet" {
   vpc_id  =  "${aws_vpc.main.id}"
   az_list = "${data.aws_availability_zones.az.names}"
   cidr    = "${local.general}"  
+}
+
+module "subnet" {
+  source = "../mod-subnet"
+  
 }
