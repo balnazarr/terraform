@@ -37,12 +37,7 @@ resource "aws_vpc" "main" {
 module "general-subnet" {
   source  = "../mod-subnet"
 
-  vpc_id  =  "${aws_vpc.main.id}"
-  az_list = "${data.aws_availability_zones.az.names}"
-  cidr    = "${local.general}"  
-}
-
-module "subnet" {
-  source = "../mod-subnet"
-  
+  vpc_id  = "${aws_vpc.main.id}"
+  cidr    = "${local.general}"
+  az_list = "${data.aws_availability_zones.az.names}" 
 }
