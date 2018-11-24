@@ -13,9 +13,3 @@ resource "aws_vpc" "main" {
       Name = "${var.name}-VPC"
   }
 }
-
-module "subnet-general" {
-  vpc_id = "${aws_vpc.main.id}"
-  cidr   = "${local.general}"
-  region = "${var.region}"
-}
