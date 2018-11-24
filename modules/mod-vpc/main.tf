@@ -5,8 +5,8 @@
 locals{
    vpc_cidr = "${var.vpc_cidr}"
 
-   general = "${cidrsubnet(local.vpc_cidr, 6, 2 )}"
-   access  = "${cidrsubnet(local.vpc_cidr, 6, 1 )}"
+   general = "${cidrsubnet(local.vpc_cidr, 8, 10 )}"
+   access  = "${cidrsubnet(local.vpc_cidr, 6, 5 )}"
    database = "${cidrsubnet(local.vpc_cidr, 6, 3 )}"
 }
 
