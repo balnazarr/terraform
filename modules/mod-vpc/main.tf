@@ -1,10 +1,9 @@
 locals{
-   vpc_cidr = "10.0.0.0/16"
+   vpc_cidr = "${var.vpc_cidr}"
 
-   general = "cidrsubnet(${local.vpc_cidr}, 6,2 )"
-   access  = "cidrsubnet(${local.vpc_cidr}, 6,1 )"
-   database = "cidrsubnet(${local.vpc_cidr}, 6,3 )"
-
+   general = "cidrsubnet(${local.vpc_cidr}, 6, 2 )"
+   access  = "cidrsubnet(${local.vpc_cidr}, 6, 1 )"
+   database = "cidrsubnet(${local.vpc_cidr}, 6, 3 )"
 }
 
 resource "aws_vpc" "main" {
@@ -12,5 +11,5 @@ resource "aws_vpc" "main" {
 
   tags {
       Name = "${var.name}-VPC"
-    }
+  }
 }
