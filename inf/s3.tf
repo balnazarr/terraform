@@ -22,14 +22,12 @@ resource "aws_s3_bucket" "target" {
   acl = "private"
 }
 
-/*
 resource "aws_s3_bucket_notification" "event" {
-  bucket = "${aws_s3_bucket.test.id}"
+  bucket = "${aws_s3_bucket.source.id}"
 
   lambda_function {
-    lambda_function_arn = "${aws_lambda_function.func.arn}"
+    lambda_function_arn = "${aws_lambda_function.lambda.arn}"
     events              = ["s3:ObjectCreated:*"]
     filter_suffix       = ".txt"
   }
 }
-*/
