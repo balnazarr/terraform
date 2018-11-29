@@ -1,3 +1,7 @@
+#----------------------------------------------------------------
+# S3 buckets
+#----------------------------------------------------------------
+
 resource "random_integer" "rnd" {
   min     = 500
   max     = 600
@@ -22,6 +26,11 @@ resource "aws_s3_bucket" "target" {
   acl = "private"
 }
 
+
+#----------------------------------------------------------------
+# Bucket events
+#----------------------------------------------------------------
+
 resource "aws_s3_bucket_notification" "event" {
   bucket = "${aws_s3_bucket.source.id}"
 
@@ -32,30 +41,10 @@ resource "aws_s3_bucket_notification" "event" {
   }
 }
 
-resource "aws_s3_bucket_notification" "bucket_notification" {
-  bucket = "${aws_s3_bucket.source.id}"
-
-  topic {
-    topic_arn     = "${aws_sns_topic.topic.arn}"
-    events        = ["s3:ObjectCreated:*"]
-    filter_suffix = ".txt"
-  }
-}
-
-resource "aws_sns_topic" "topic" {
-  name = "s3-event-notification-topic"
-
-  policy = <<-EOF
-  {
-    "Version":"2012-10-17",
-    "Statement": [
-      {
-        "Effect": "Allow",
-        "Action": "SNS:Publish",
-        "Principal": {"AWS":"*"},
-        "Resource": "arn:aws:sns:*:*:s3-event-notification-topic"
-      }
-    ]
-  }
-  EOF
+resource "aws_lambda_permission" "allow_bucket" {
+  statement_id  = "AllowExecutionFromS3Bucket"
+  action        = "lambda:InvokeFunction"
+  function_name = "${aws_lambda_function.lambda.arn}"
+  principal     = "s3.amazonaws.com"
+  source_arn    = "${aws_s3_bucket.source.arn}"
 }
