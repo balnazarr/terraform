@@ -31,3 +31,31 @@ resource "aws_s3_bucket_notification" "event" {
     filter_suffix       = ".txt"
   }
 }
+
+resource "aws_s3_bucket_notification" "bucket_notification" {
+  bucket = "${aws_s3_bucket.source.id}"
+
+  topic {
+    topic_arn     = "${aws_sns_topic.topic.arn}"
+    events        = ["s3:ObjectCreated:*"]
+    filter_suffix = ".txt"
+  }
+}
+
+resource "aws_sns_topic" "topic" {
+  name = "s3-event-notification-topic"
+
+  policy = <<-EOF
+  {
+    "Version":"2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": "SNS:Publish",
+        "Principal": {"AWS":"*"},
+        "Resource": "arn:aws:sns:*:*:s3-event-notification-topic"
+      }
+    ]
+  }
+  EOF
+}
