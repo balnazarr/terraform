@@ -1,5 +1,5 @@
 #----------------------------------------------------------------
-# Roles
+# Terraform Role
 #----------------------------------------------------------------
 
 resource "aws_iam_role" "terraform_role" {
@@ -30,24 +30,29 @@ resource "aws_iam_role_policy_attachment" "admin" {
 
 
 #----------------------------------------------------------------
-# Policies
+# Lambda Role
 #----------------------------------------------------------------
 
-resource "aws_iam_policy" "admin" {
-  name        = "admin-policy"
-  path        = "/"
-  description = "Admin policy"
-
-  policy = <<-EOF
+resource "aws_iam_role" "lambda" {
+  name = "lambda_role"
+  assume_role_policy = <<-EOF
   {
     "Version": "2012-10-17",
     "Statement": [
       {
-        "Effect" : "Allow",
-        "Action" : "*",
-        "Resource" : "*"
+        "Sid": "LambdaRole",
+        "Effect": "Allow",
+        "Action": "sts:AssumeRole",
+        "Principal": {
+          "Service" : "lambda.amazonaws.com" 
+        }
       }
     ]
   }
   EOF
+}
+
+resource "aws_iam_role_policy_attachment" "lambda" {
+  role = "${aws_iam_role.lambda.name}"
+  policy_arn = "${aws_iam_policy.lambda.arn}"
 }
